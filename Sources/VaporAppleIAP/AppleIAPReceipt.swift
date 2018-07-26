@@ -300,7 +300,7 @@ public struct AppleIAPReceipt: Codable {
 
         let now = Date()
 
-        for receiptInfo in latest_receipt_info {
+        for receiptInfo in receipt.in_app.sorted(by: { $0.expires_date > $1.expires_date }) {
             let beginDate = receiptInfo.purchase_date
             let endDate = receiptInfo.is_cancelled ? receiptInfo.cancellation_date : receiptInfo.expires_date
 
