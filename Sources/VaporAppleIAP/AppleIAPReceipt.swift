@@ -304,7 +304,7 @@ public struct AppleIAPReceipt: Codable {
             let beginDate = receiptInfo.purchase_date
             let endDate = receiptInfo.is_cancelled ? receiptInfo.cancellation_date : receiptInfo.expires_date
 
-            if beginDate <= now && now > endDate {
+            if beginDate <= now && now < endDate {
                 isExpired = false
                 expiredTS = Int(endDate.timeIntervalSince1970)
             }
