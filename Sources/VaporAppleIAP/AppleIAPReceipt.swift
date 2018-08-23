@@ -179,7 +179,8 @@ public struct AppleIAPReceipt: Codable {
             self.receipt_creation_date_ms = try Int(values.decode(String.self, forKey: .receipt_creation_date_ms))!
             self.request_date_ms = try Int(values.decode(String.self, forKey: .request_date_ms))!
 
-            self.in_app = try values.decodeIfPresent([AppleIAPReceipt.ReceiptInfo].self, forKey: .in_app) ?? []
+            self.in_app = (try values.decodeIfPresent([AppleIAPReceipt.ReceiptInfo].self, forKey: .in_app) ?? [])
+                .sorted(by: { $0.expires_date > $1.expires_date })
         }
 
         public init(receipt_type: String, app_item_id: Int, bundle_id: String, application_version: String, download_id: Int, receipt_creation_date_ms: Int, request_date_ms: Int) {
@@ -300,7 +301,7 @@ public struct AppleIAPReceipt: Codable {
 
         let now = Date()
 
-        for receiptInfo in receipt.in_app.sorted(by: { $0.expires_date > $1.expires_date }) {
+        for receiptInfo in receipt.in_app {
             let beginDate = receiptInfo.purchase_date
             let endDate = receiptInfo.is_cancelled ? receiptInfo.cancellation_date : receiptInfo.expires_date
 
