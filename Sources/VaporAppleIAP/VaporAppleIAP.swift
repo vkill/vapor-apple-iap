@@ -124,7 +124,7 @@ public final class VaporAppleIAP {
                         return Future.map(on: self.eventLoopGroup){
                             let mockResponseBody = MockResponseBody(status: MockResponseBody.Status.NIONetworkError.rawValue, latest_receipt: receiptStr)
                             return HTTPResponse(
-                                status: HTTPResponseStatus(statusCode: 482, reasonPhrase: error.localizedDescription),
+                                status: HTTPResponseStatus(statusCode: 482, reasonPhrase: "\(error)"),
                                 body: HTTPBody(data: try! JSONEncoder().encode(mockResponseBody))
                             )
                         }
@@ -137,7 +137,7 @@ public final class VaporAppleIAP {
                         return Future.map(on: self.eventLoopGroup){
                             let mockResponseBody = MockResponseBody(status: MockResponseBody.Status.NIOUnknownError.rawValue, latest_receipt: receiptStr)
                             return HTTPResponse(
-                                status: HTTPResponseStatus(statusCode: 483, reasonPhrase: error.localizedDescription),
+                                status: HTTPResponseStatus(statusCode: 483, reasonPhrase: "\(error)"),
                                 body: HTTPBody(data: try! JSONEncoder().encode(mockResponseBody))
                             )
                         }
